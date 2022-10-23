@@ -1,31 +1,43 @@
-import firebase from "firebase/compat/app"
-import "firebase/compat/auth"
-import "firebase/compat/firestore"
-import "firebase/compat/performance"
-import "firebase/compat/messaging"
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import HomeView from '../views/HomeView.vue'
 
+Vue.use(VueRouter)
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCrDsi1v40xqAov_ebkIVdcAO9XY8woO3Y",
-  authDomain: "prodavnica-romobila-c1880.firebaseapp.com",
-  projectId: "prodavnica-romobila-c1880",
-  storageBucket: "prodavnica-romobila-c1880.appspot.com",
-  messagingSenderId: "540848124670",
-  appId: "1:540848124670:web:6d2c40658fd1cd25902baf"
-}
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: HomeView
+  },
+  {
+    path: '/about',
+    name: 'About',
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () => import('../views/AboutView.vue')
+  },
+  {
+    path: '/auth',
+    name: 'Auth',
+    component: () => import('../views/Authentication.vue'),
+  },
+  {
+    path: '/shop',
+    name: 'Shop',
+    component: () => import('../views/Shop.vue')
 
-firebase.initializeApp(firebaseConfig)
-firebase
-  .firestore()
-  .enablePersistence({ synchronizeTabs: !0 })
-  .catch(() => {
-    console.warn("DB offline support not available");
-  })
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: () => import('../views/Settings.vue')
+  },
+]
 
-export default {
-  firestore: firebase.firestore(),
-  auth: firebase.auth(),
-  firebase: firebase,
-  notificationSupported: firebase.messaging.isSupported(),
-  messaging: firebase.messaging.isSupported() ? firebase.messaging() : null,
-}
+const router = new VueRouter({
+  routes
+})
+
+export default router
